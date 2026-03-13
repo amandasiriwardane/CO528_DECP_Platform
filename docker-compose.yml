@@ -1,0 +1,190 @@
+# version is obsolete in newer docker compose. Removed version: '3.8'
+
+services:
+  # ------------------------------------
+  # DevOps Architecture: Data Persistence
+  # ------------------------------------
+  postgres:
+    image: postgres:15-alpine
+    container_name: decp-postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: decp_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - decp-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: decp-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - decp-network
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio:latest
+    container_name: decp-blob-storage
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password123
+    ports:
+      - "9000:9000" # API Port
+      - "9001:9001" # Console Port
+    volumes:
+      - minio_data:/data
+    networks:
+      - decp-network
+    restart: unless-stopped
+
+  # ------------------------------------
+  # DevOps Architecture: Messaging
+  # ------------------------------------
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: decp-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672" # Message broker port
+      - "15672:15672" # Management UI
+    networks:
+      - decp-network
+    restart: unless-stopped
+
+  # ------------------------------------
+  # Solution Architecture: App Cluster
+  # ------------------------------------
+  api-gateway:
+    build:
+      context: ./backend
+      dockerfile: ./api-gateway/Dockerfile
+    container_name: decp-api-gateway
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=development
+      - PORT=8080
+    depends_on:
+      - user-service
+      - feed-service
+      - job-service
+      - event-service
+    networks:
+      - decp-network
+
+  user-service:
+    build:
+      context: ./backend
+      dockerfile: ./user-service/Dockerfile
+    container_name: decp-user-service
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=admin
+      - DB_PASS=password
+      - DB_NAME=decp_db
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=decp_super_secret_key
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - decp-network
+
+  feed-service:
+    build:
+      context: ./backend
+      dockerfile: ./feed-service/Dockerfile
+    deploy:
+      replicas: 2
+    # Removed container_name because Docker needs to natively auto-generate
+    # distinct names (e.g. decp_platform-feed-service-1, decp_platform-feed-service-2) when scaling.
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=postgres
+      - S3_ENDPOINT=minio
+      - S3_PORT=9000
+      - S3_ACCESS_KEY=admin
+      - S3_SECRET_KEY=password123
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - postgres
+      - minio
+      - rabbitmq
+    networks:
+      - decp-network
+
+  job-service:
+    build:
+      context: ./backend
+      dockerfile: ./job-service/Dockerfile
+    container_name: decp-job-service
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=postgres
+    depends_on:
+      - postgres
+    networks:
+      - decp-network
+
+  event-service:
+    build:
+      context: ./backend
+      dockerfile: ./event-service/Dockerfile
+    container_name: decp-event-service
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=postgres
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - postgres
+      - rabbitmq
+    networks:
+      - decp-network
+
+  notification-service:
+    build:
+      context: ./backend
+      dockerfile: ./notification-service/Dockerfile
+    container_name: decp-notification-service
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - SMTP_SERVER=fake-smtp-server # Placeholder for External SMTP diagram interaction
+    depends_on:
+      - rabbitmq
+    networks:
+      - decp-network
+
+networks:
+  decp-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
