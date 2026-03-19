@@ -2,7 +2,7 @@
 
 DECP is a modern, microservices-based web application designed to bridge the gap between students, alumni, and department administrators. It features real-time notifications, a professional career hub with CV uploads, research collaboration tools, and an integrated messaging system.
 
-## 🚀 Features
+## Features
 
 - **Real-time Feed**: Share updates, images, and videos with interactive likes and comments.
 - **Career Hub**: Post and apply for jobs/internships with PDF resume uploads (integrated with MinIO S3).
@@ -12,7 +12,7 @@ DECP is a modern, microservices-based web application designed to bridge the gap
 - **Admin Analytics**: A dedicated dashboard for platform-wide insights.
 - **Premium UI**: Sleek, responsive design with glassmorphism, micro-animations, and a unified layout.
 
-## 🛠️ Architecture
+## Architecture
 
 The platform follows a **Service-Oriented Architecture (SOA)**:
 - **API Gateway**: Centralized entry point and proxy.
@@ -20,7 +20,7 @@ The platform follows a **Service-Oriented Architecture (SOA)**:
 - **Communication**: Event-driven via **RabbitMQ**.
 - **Storage**: PostgreSQL (DB), MinIO (S3 Media), and Redis (Cache).
 
-## 📦 Getting Started
+## Getting Started
 
 ### Prerequisites
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
@@ -53,8 +53,8 @@ You can register a new account or use these pre-defined roles:
 
 ---
 
-## 🔧 Deployment
+## Deployment
 For production deployment instructions to a VPS or Cloud provider, please refer to the [Deployment Guide](./deployment_guide.md).
 
-## 📄 License
+## License
 This project was developed for the CO528 Department Engagement & Career Platform assignment.
