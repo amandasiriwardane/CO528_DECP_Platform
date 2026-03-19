@@ -19,7 +19,8 @@ const Layout = ({ children }) => {
     // Connect to SSE stream for live notifications
     useEffect(() => {
         if (!token) return;
-        const es = new EventSource(`http://localhost:8080/api/notifications/stream?token=${token}`);
+        const apiBase = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8080';
+        const es = new EventSource(`${apiBase}/api/notifications/stream?token=${token}`);
         eventSourceRef.current = es;
 
         const handleEvent = (type) => (e) => {
