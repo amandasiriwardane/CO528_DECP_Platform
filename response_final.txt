@@ -1,0 +1,44 @@
+* Host localhost:8080 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:8080...
+* Established connection to localhost (::1 port 8080) from ::1 port 61793 
+* using HTTP/1.x
+> OPTIONS /api/users/register HTTP/1.1
+
+> Host: localhost:8080
+
+> User-Agent: curl/8.18.0
+
+> Accept: */*
+
+> Origin: http://localhost:5173
+
+> Access-Control-Request-Method: POST
+
+> Access-Control-Request-Headers: authorization,content-type
+
+> 
+
+* Request completely sent off
+< HTTP/1.1 204 No Content
+
+< X-Powered-By: Express
+
+< Access-Control-Allow-Origin: *
+
+< Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS,PATCH
+
+< Access-Control-Allow-Headers: Content-Type,Authorization,X-Requested-With
+
+< Content-Length: 0
+
+< Date: Wed, 18 Mar 2026 17:45:38 GMT
+
+< Connection: keep-alive
+
+< Keep-Alive: timeout=5
+
+< 
+
+* Connection #0 to host localhost:8080 left intact

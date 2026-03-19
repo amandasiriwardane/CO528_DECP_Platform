@@ -125,6 +125,7 @@ services:
       - S3_ACCESS_KEY=admin
       - S3_SECRET_KEY=password123
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - JWT_SECRET=decp_super_secret_key
     depends_on:
       - postgres
       - minio
@@ -142,8 +143,15 @@ services:
       - NODE_ENV=development
       - PORT=3000
       - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=admin
+      - DB_PASS=password
+      - DB_NAME=decp_db
+      - JWT_SECRET=decp_super_secret_key
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
     depends_on:
       - postgres
+      - rabbitmq
     networks:
       - decp-network
 
@@ -158,6 +166,7 @@ services:
       - PORT=3000
       - DB_HOST=postgres
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - JWT_SECRET=decp_super_secret_key
     depends_on:
       - postgres
       - rabbitmq
@@ -175,6 +184,7 @@ services:
       - PORT=3000
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
       - SMTP_SERVER=fake-smtp-server # Placeholder for External SMTP diagram interaction
+      - JWT_SECRET=decp_super_secret_key
     depends_on:
       - rabbitmq
     networks:
