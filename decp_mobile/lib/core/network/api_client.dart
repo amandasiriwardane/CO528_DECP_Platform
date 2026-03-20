@@ -1,16 +1,24 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+// ----- SERVER CONFIGURATION -----
+// Change this to your computer's exact local IPv4 address when running on a physical phone.
+// For example: 'http://192.168.1.100:8080/api'
+const String kBaseUrl = 'http://192.168.8.185:8080/api';
+
 class ApiClient {
   late Dio _dio;
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
   ApiClient() {
-    _dio = Dio(BaseOptions(
-      baseUrl: 'http://10.0.2.2:8080/api', // Adjust base URL for Android emulator
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
-    ));
+    _dio = Dio(
+      BaseOptions(
+        baseUrl: 'http://192.168.8.185:8080/api',
+        //baseUrl:'http://10.0.2.2:8080/api', // Adjust base URL for Android emulator
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10),
+      ),
+    );
 
     _dio.interceptors.add(
       InterceptorsWrapper(

@@ -3,6 +3,9 @@ import '../../auth/providers/auth_provider.dart';
 import '../../../core/constants/app_colors.dart';
 import 'package:provider/provider.dart';
 import '../../../shared/screens/menu_screen.dart';
+import '../../../shared/widgets/notifications_dialog.dart';
+import 'chat_screen.dart';
+import '../../profile/screens/profile_screen.dart';
 
 class MessagesScreen extends StatefulWidget {
   const MessagesScreen({super.key});
@@ -39,14 +42,21 @@ class _MessagesScreenState extends State<MessagesScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none),
-            onPressed: () {},
+            onPressed: () {
+              showDialog(context: context, builder: (_) => const NotificationsDialog());
+            },
           ),
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(
-              radius: 16,
-              backgroundColor: AppColors.primary.withOpacity(0.2),
-              child: Text(initials, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.primaryDark)),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfileScreen()));
+              },
+              child: CircleAvatar(
+                radius: 16,
+                backgroundColor: AppColors.primary.withOpacity(0.2),
+                child: Text(initials, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.primaryDark)),
+              ),
             ),
           )
         ],
@@ -179,7 +189,11 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             style: const TextStyle(fontSize: 13, color: Color(0xFF64748B)),
                           ),
                           onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Chat screen coming soon!')));
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => ChatScreen(
+                              userName: chat['name']!,
+                              role: chat['role']!,
+                              initial: chat['initial']!,
+                            )));
                           },
                         );
                       },
