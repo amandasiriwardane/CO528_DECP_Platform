@@ -10,6 +10,8 @@ import 'features/auth/screens/register_screen.dart';
 import 'features/feed/providers/feed_provider.dart';
 import 'features/jobs/providers/job_provider.dart';
 import 'features/events/providers/event_provider.dart';
+import 'features/research/providers/research_provider.dart';
+import 'features/messages/providers/messages_provider.dart';
 import 'shared/screens/main_tab_screen.dart';
 
 void main() {
@@ -23,6 +25,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => FeedProvider(apiClient)),
         ChangeNotifierProvider(create: (_) => JobProvider(apiClient)),
         ChangeNotifierProvider(create: (_) => EventProvider(apiClient)),
+        ChangeNotifierProvider(create: (_) => ResearchProvider(apiClient)),
+        ChangeNotifierProvider(create: (_) => MessagesProvider(apiClient)),
       ],
       child: const DECPApp(),
     ),

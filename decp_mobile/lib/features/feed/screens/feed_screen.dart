@@ -6,6 +6,9 @@ import '../../../core/constants/app_colors.dart';
 import '../../../shared/screens/menu_screen.dart';
 import '../../../shared/widgets/notifications_dialog.dart';
 import '../../profile/screens/profile_screen.dart';
+import '../../../core/network/api_client.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -16,6 +19,23 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen> {
   final TextEditingController _postController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  File? _selectedImage;
+
+  Future<void> _pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _selectedImage = File(image.path);
+      });
+    }
+  }
+
+  void _removeImage() {
+    setState(() {
+      _selectedImage = null;
+    });
+  }
 
   @override
   void initState() {
@@ -117,21 +137,46 @@ class _FeedScreenState extends State<FeedScreen> {
                               ],
                             ),
                             const SizedBox(height: 16),
+                            if (_selectedImage != null)
+                              Stack(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 16),
+                                    height: 120,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      image: DecorationImage(image: FileImage(_selectedImage!), fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 8,
+                                    right: 8,
+                                    child: InkWell(
+                                      onTap: _removeImage,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: const BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
+                                        child: const Icon(Icons.close, color: Colors.white, size: 16),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 TextButton.icon(
-                                  onPressed: () {
-                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Media picker coming soon!')));
-                                  },
+                                  onPressed: _pickImage,
                                   icon: const Icon(Icons.image_outlined, color: AppColors.textSecondary, size: 20),
                                   label: const Text('Add Media', style: TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
                                 ),
                                 ElevatedButton.icon(
                                   onPressed: () {
-                                    if (_postController.text.trim().isNotEmpty) {
-                                      context.read<FeedProvider>().createPost(_postController.text.trim());
+                                    if (_postController.text.trim().isNotEmpty || _selectedImage != null) {
+                                      context.read<FeedProvider>().createPost(_postController.text.trim(), imagePath: _selectedImage?.path);
                                       _postController.clear();
+                                      _removeImage();
                                       FocusScope.of(context).unfocus();
                                     }
                                   },
@@ -204,10 +249,15 @@ class _FeedScreenState extends State<FeedScreen> {
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
                                         child: Image.network(
-                                          'http://10.0.2.2:8080${post.imageUrl}', 
+                                          post.imageUrl!.startsWith('http') 
+                                            ? post.imageUrl!.replaceAll('localhost', Uri.parse(kBaseUrl).host).replaceAll('minio', Uri.parse(kBaseUrl).host)
+                                            : '${Uri.parse(kBaseUrl).origin}${post.imageUrl}',
                                           width: double.infinity,
                                           fit: BoxFit.cover,
-                                          errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                                          errorBuilder: (context, error, stackTrace) {
+                                            debugPrint('Image Load Error: $error');
+                                            return const SizedBox.shrink();
+                                          },
                                         ),
                                       ),
                                     ],

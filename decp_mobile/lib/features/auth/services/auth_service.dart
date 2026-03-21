@@ -21,11 +21,17 @@ class AuthService {
         final token = data['token'];
         if (token != null) {
           await _storage.write(key: 'jwt_token', value: token);
+          
+          try {
+            final profileRes = await _apiClient.dio.get('/users/profile');
+            if (profileRes.statusCode == 200) {
+              return UserModel.fromJson(profileRes.data['profile']);
+            }
+          } catch (_) {}
         }
         if (data['user'] != null) {
           return UserModel.fromJson(data['user']);
         }
-        return UserModel.fromJson({'id': '1', 'username': username, 'first_name': '', 'last_name': '', 'role': 'Student'}); // Fallback
       }
       return null;
     } on DioException catch (e) {
@@ -57,6 +63,16 @@ class AuthService {
     } on DioException catch (e) {
       throw Exception(e.response?.data['error'] ?? 'Registration failed');
     }
+  }
+
+  Future<UserModel?> fetchProfile() async {
+    try {
+      final response = await _apiClient.dio.get('/users/profile');
+      if (response.statusCode == 200) {
+        return UserModel.fromJson(response.data['profile']);
+      }
+    } catch (_) {}
+    return null;
   }
 
   Future<void> updateProfile(String firstName, String lastName) async {

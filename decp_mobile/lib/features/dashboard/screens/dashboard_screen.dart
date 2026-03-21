@@ -5,6 +5,9 @@ import 'package:provider/provider.dart';
 import '../../../shared/screens/menu_screen.dart';
 import '../../../shared/widgets/notifications_dialog.dart';
 import '../../profile/screens/profile_screen.dart';
+import '../../feed/screens/feed_screen.dart';
+import '../../jobs/screens/jobs_screen.dart';
+import '../../events/screens/events_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -147,11 +150,17 @@ class DashboardScreen extends StatelessWidget {
             // Quick Links Grid
             Row(
               children: [
-                Expanded(child: _buildQuickActionCard(Icons.chat_bubble_outline, 'Explore Feed')),
+                Expanded(child: _buildQuickActionCard(Icons.chat_bubble_outline, 'Explore Feed', () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const FeedScreen()));
+                })),
                 const SizedBox(width: 16),
-                Expanded(child: _buildQuickActionCard(Icons.work_outline, 'Find Jobs')),
+                Expanded(child: _buildQuickActionCard(Icons.work_outline, 'Find Jobs', () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const JobsScreen()));
+                })),
                 const SizedBox(width: 16),
-                Expanded(child: _buildQuickActionCard(Icons.calendar_today_outlined, 'Browse Events')),
+                Expanded(child: _buildQuickActionCard(Icons.calendar_today_outlined, 'Browse Events', () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const EventsScreen()));
+                })),
               ],
             )
           ],
@@ -186,9 +195,12 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildQuickActionCard(IconData icon, String title) {
-    return Container(
-      height: 105,
+  Widget _buildQuickActionCard(IconData icon, String title, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        height: 105,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -220,6 +232,7 @@ class DashboardScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

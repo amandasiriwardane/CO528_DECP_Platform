@@ -43,9 +43,13 @@ class FeedProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> createPost(String content) async {
+  Future<void> createPost(String content, {String? imagePath}) async {
     try {
-      final formData = FormData.fromMap({'content': content});
+      final Map<String, dynamic> data = {'content': content};
+      if (imagePath != null) {
+        data['media'] = await MultipartFile.fromFile(imagePath);
+      }
+      final formData = FormData.fromMap(data);
       final response = await _apiClient.dio.post('/feed/post', data: formData);
       if (response.statusCode == 201) {
         fetchPosts(); // Refresh feed

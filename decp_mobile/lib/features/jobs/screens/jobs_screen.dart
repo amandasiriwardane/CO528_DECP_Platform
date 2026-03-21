@@ -4,6 +4,7 @@ import '../providers/job_provider.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../../core/constants/app_colors.dart';
 import 'package:intl/intl.dart';
+import '../../../shared/screens/menu_screen.dart';
 
 class JobsScreen extends StatefulWidget {
   const JobsScreen({super.key});
@@ -29,7 +30,15 @@ class _JobsScreenState extends State<JobsScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      drawer: const MenuDrawer(),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
         title: const Text('Jobs', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
         elevation: 0,
         backgroundColor: Colors.white,

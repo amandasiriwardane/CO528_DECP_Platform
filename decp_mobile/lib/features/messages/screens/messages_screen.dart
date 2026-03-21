@@ -6,6 +6,7 @@ import '../../../shared/screens/menu_screen.dart';
 import '../../../shared/widgets/notifications_dialog.dart';
 import 'chat_screen.dart';
 import '../../profile/screens/profile_screen.dart';
+import '../providers/messages_provider.dart';
 
 class MessagesScreen extends StatefulWidget {
   const MessagesScreen({super.key});
@@ -17,19 +18,20 @@ class MessagesScreen extends StatefulWidget {
 class _MessagesScreenState extends State<MessagesScreen> {
   bool isDirect = true;
 
-  final List<Map<String, String>> mockChats = [
-    {'name': 'Dharani Navodya', 'role': 'Student', 'initial': 'D'},
-    {'name': 'Dharani Navodya', 'role': 'Student', 'initial': 'D'},
-    {'name': 'Dharani Navodya', 'role': 'Student', 'initial': 'D'},
-    {'name': 'Dharanii Navodya', 'role': 'Student', 'initial': 'D'},
-    {'name': 'nimesha Thathsaranio', 'role': 'Student', 'initial': 'N'},
-    {'name': 'shammi perera', 'role': 'Student', 'initial': 'S'},
-  ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<MessagesProvider>().fetchUsers();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final user = context.watch<AuthProvider>().user;
     final initials = (user?.username.isNotEmpty == true) ? user!.username[0].toUpperCase() : 'U';
+    final provider = context.watch<MessagesProvider>();
+    final users = provider.users;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -159,40 +161,41 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       ),
                     ),
                     const Divider(color: Color(0xFFF1F5F9), thickness: 1.5, height: 1), // slate-100
-                    ListView.separated(
+                    provider.isLoading 
+                      ? const Padding(padding: EdgeInsets.all(32), child: Center(child: CircularProgressIndicator()))
+                      : ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: isDirect ? mockChats.length : 0,
+                      itemCount: isDirect ? users.length : 0,
                       separatorBuilder: (context, index) => const Divider(color: Color(0xFFF1F5F9), thickness: 1, height: 1),
                       itemBuilder: (context, index) {
-                        final chat = mockChats[index];
+                        final chatUser = users[index];
+                        final initial = chatUser.firstName.isNotEmpty ? chatUser.firstName[0].toString().toUpperCase() : chatUser.username[0].toString().toUpperCase();
+                        final displayName = chatUser.firstName.isNotEmpty ? '${chatUser.firstName} ${chatUser.lastName}' : chatUser.username;
                         return ListTile(
                           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                           leading: CircleAvatar(
                             radius: 22,
                             backgroundColor: AppColors.primary.withOpacity(0.15),
                             child: Text(
-                              chat['initial']!,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryDark,
-                                fontSize: 16,
-                              ),
+                              initial,
+                              style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryDark, fontSize: 16),
                             ),
                           ),
                           title: Text(
-                            chat['name']!,
+                            displayName,
                             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF0F172A)),
                           ),
                           subtitle: Text(
-                            chat['role']!,
+                            chatUser.role,
                             style: const TextStyle(fontSize: 13, color: Color(0xFF64748B)),
                           ),
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (_) => ChatScreen(
-                              userName: chat['name']!,
-                              role: chat['role']!,
-                              initial: chat['initial']!,
+                              userId: chatUser.id,
+                              userName: displayName,
+                              role: chatUser.role,
+                              initial: initial,
                             )));
                           },
                         );

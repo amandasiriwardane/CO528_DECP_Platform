@@ -74,6 +74,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final auth = context.watch<AuthProvider>();
     final user = auth.user;
 
+    if (_firstNameCtrl.text.isEmpty && user?.firstName != null && user!.firstName.isNotEmpty) {
+      _firstNameCtrl.text = user.firstName;
+    }
+    if (_lastNameCtrl.text.isEmpty && user?.lastName != null && user!.lastName.isNotEmpty) {
+      _lastNameCtrl.text = user.lastName;
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(

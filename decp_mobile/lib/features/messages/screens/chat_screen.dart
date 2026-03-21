@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 
+import 'package:provider/provider.dart';
+import '../../auth/providers/auth_provider.dart';
+import '../providers/messages_provider.dart';
+import 'package:intl/intl.dart';
+
 class ChatScreen extends StatefulWidget {
+  final int userId;
   final String userName;
   final String role;
   final String initial;
 
   const ChatScreen({
     super.key,
+    required this.userId,
     required this.userName,
     required this.role,
     required this.initial,
@@ -19,19 +26,21 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
-  final List<Map<String, dynamic>> _messages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<MessagesProvider>().fetchMessages(widget.userId);
+    });
+  }
 
   void _sendMessage() {
-    if (_messageController.text.trim().isEmpty) return;
+    final text = _messageController.text.trim();
+    if (text.isEmpty) return;
     
-    setState(() {
-      _messages.add({
-        'text': _messageController.text.trim(),
-        'isMe': true,
-        'time': TimeOfDay.now().format(context),
-      });
-      _messageController.clear();
-    });
+    context.read<MessagesProvider>().sendMessage(widget.userId, text);
+    _messageController.clear();
   }
 
   @override
@@ -42,6 +51,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final me = context.watch<AuthProvider>().user;
+    final provider = context.watch<MessagesProvider>();
+    final messages = provider.activeChatMessages;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -78,12 +91,14 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
+            child: provider.isLoading && messages.isEmpty
+              ? const Center(child: CircularProgressIndicator())
+              : ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-              itemCount: _messages.length,
+              itemCount: messages.length,
               itemBuilder: (context, index) {
-                final message = _messages[index];
-                final isMe = message['isMe'] as bool;
+                final message = messages[index];
+                final isMe = message.senderId.toString() == me?.id;
 
                 return Align(
                   alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
@@ -107,7 +122,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                message['text'] as String,
+                                message.content,
                                 style: TextStyle(
                                   color: isMe ? Colors.white : AppColors.textPrimary,
                                   fontSize: 15,
@@ -115,7 +130,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                message['time'] as String,
+                                DateFormat('h:mm a').format(message.createdAt),
                                 style: TextStyle(
                                   fontSize: 10,
                                   color: isMe ? Colors.white.withOpacity(0.7) : AppColors.textSecondary,

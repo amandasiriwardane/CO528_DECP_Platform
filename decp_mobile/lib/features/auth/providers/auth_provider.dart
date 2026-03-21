@@ -25,8 +25,15 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
 
     _hasToken = await _authService.hasToken();
-    // Assuming backend has a /me route to fetch user info if token exists
-    // For now, if there's a token, we just mark as authenticated.
+    if (_hasToken) {
+      final profile = await _authService.fetchProfile();
+      if (profile != null) {
+        _user = profile;
+      } else {
+        _hasToken = false;
+        await _authService.logout();
+      }
+    }
     
     _isLoading = false;
     notifyListeners();

@@ -2,9 +2,20 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 // ----- SERVER CONFIGURATION -----
-// Change this to your computer's exact local IPv4 address when running on a physical phone.
-// For example: 'http://192.168.1.100:8080/api'
-const String kBaseUrl = 'http://192.168.8.185:8080/api';
+// Uncomment the ONLY ONE backend URL you want to connect to:
+
+// 1. AWS Cloud Deployed Backend (Production)
+// const String kBaseUrl = 'http://13.60.230.32:8080/api';
+
+// 2. Render Cloud Deployed Backend (Production)
+const String kBaseUrl = 'https://api-gateway-byj6.onrender.com/api';
+
+// 3. Android Emulator (Local Docker Backend)
+// const String kBaseUrl = 'http://10.0.2.2:8080/api';
+
+// 4. Physical Device on Wi-Fi (Local Docker Backend)
+//    - This MUST be your computer's current local IPv4 address.
+// const String kBaseUrl = 'http://192.168.8.185:8080/api';
 
 class ApiClient {
   late Dio _dio;
@@ -13,8 +24,7 @@ class ApiClient {
   ApiClient() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: 'http://192.168.8.185:8080/api',
-        //baseUrl:'http://10.0.2.2:8080/api', // Adjust base URL for Android emulator
+        baseUrl: kBaseUrl, // Now natively uses the constant from above
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),
       ),
