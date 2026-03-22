@@ -7,10 +7,11 @@ import '../providers/messages_provider.dart';
 import 'package:intl/intl.dart';
 
 class ChatScreen extends StatefulWidget {
-  final int userId;
-  final String userName;
-  final String role;
+  final int userId; // Also acts as groupId if isGroup == true
+  final String userName; // Acts as groupName
+  final String role; // Acts as group role
   final String initial;
+  final bool isGroup;
 
   const ChatScreen({
     super.key,
@@ -18,6 +19,7 @@ class ChatScreen extends StatefulWidget {
     required this.userName,
     required this.role,
     required this.initial,
+    this.isGroup = false,
   });
 
   @override
@@ -31,7 +33,11 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<MessagesProvider>().fetchMessages(widget.userId);
+      if (widget.isGroup) {
+        context.read<MessagesProvider>().fetchGroupMessages(widget.userId);
+      } else {
+        context.read<MessagesProvider>().fetchMessages(widget.userId);
+      }
     });
   }
 
@@ -39,7 +45,11 @@ class _ChatScreenState extends State<ChatScreen> {
     final text = _messageController.text.trim();
     if (text.isEmpty) return;
     
-    context.read<MessagesProvider>().sendMessage(widget.userId, text);
+    if (widget.isGroup) {
+      context.read<MessagesProvider>().sendGroupMessage(widget.userId, text);
+    } else {
+      context.read<MessagesProvider>().sendMessage(widget.userId, text);
+    }
     _messageController.clear();
   }
 
@@ -107,6 +117,14 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Column(
                       crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                       children: [
+                        if (!isMe && widget.isGroup && message.senderUsername != null)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4, bottom: 4),
+                            child: Text(
+                              message.senderUsername!.toUpperCase(),
+                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AppColors.primary),
+                            ),
+                          ),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                           decoration: BoxDecoration(
