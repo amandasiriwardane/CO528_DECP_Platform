@@ -5,6 +5,7 @@ import '../../auth/providers/auth_provider.dart';
 import '../../../core/constants/app_colors.dart';
 import 'package:intl/intl.dart';
 import '../../../shared/screens/menu_screen.dart';
+import 'widgets/job_application_modal.dart';
 
 class JobsScreen extends StatefulWidget {
   const JobsScreen({super.key});
@@ -150,12 +151,18 @@ class _JobsScreenState extends State<JobsScreen> {
                                       width: double.infinity,
                                       child: ElevatedButton(
                                         onPressed: job.hasApplied ? null : () {
-                                          context.read<JobProvider>().applyForJob(job.id);
-                                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Mock CV Submitted Successfully!')));
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => JobApplicationModal(
+                                              jobId: job.id,
+                                              jobTitle: job.title,
+                                              companyName: job.username,
+                                            ),
+                                          );
                                         },
                                         style: ElevatedButton.styleFrom(
                                           padding: const EdgeInsets.symmetric(vertical: 14),
-                                          backgroundColor: job.hasApplied ? AppColors.successLight : AppColors.textPrimary,
+                                          backgroundColor: job.hasApplied ? AppColors.successLight : const Color(0xFF0F172A), // Update apply button color to dark
                                           foregroundColor: job.hasApplied ? AppColors.success : Colors.white,
                                           disabledBackgroundColor: AppColors.successLight,
                                           disabledForegroundColor: AppColors.success,

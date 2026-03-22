@@ -42,11 +42,23 @@ class JobProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> applyForJob(String jobId) async {
+  Future<void> applyForJob(String jobId, [dynamic file]) async {
     try {
-      final formData = FormData.fromMap({
-        'resume': MultipartFile.fromString('Dummy CV File (Mobile upload coming soon)', filename: 'resume.txt'),
-      });
+      final formData = FormData();
+      
+      if (file != null) {
+        // file is from file_picker (PlatformFile)
+        formData.files.add(MapEntry(
+          'resume',
+          MultipartFile.fromBytes(
+            file.bytes ?? [], 
+            filename: file.name,
+          ),
+        ));
+      } else {
+        formData.fields.add(const MapEntry('resume', 'Dummy CV File'));
+      }
+
       final response = await _apiClient.dio.post('/jobs/$jobId/apply', data: formData);
       if (response.statusCode == 200 || response.statusCode == 201) {
         final index = _jobs.indexWhere((j) => j.id == jobId);
@@ -63,6 +75,7 @@ class JobProvider with ChangeNotifier {
       print('APPLY ERROR: $e');
       _errorMessage = 'Failed to apply';
       notifyListeners();
+      rethrow; // Re-throw to show error in UI
     }
   }
 }
