@@ -1,0 +1,100 @@
+decp-user-service  | 
+decp-user-service  | > user-service@1.0.0 start
+decp-user-service  | > node index.js
+decp-user-service  | 
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T17:22:30.714Z","message":"User Service listening on port 3000"}
+decp-user-service  | {"level":"ERROR","timestamp":"2026-03-19T17:22:30.753Z","message":"RabbitMQ connection failed","errno":-111,"code":"ECONNREFUSED","syscall":"connect","address":"172.18.0.5","port":5672}
+decp-user-service  | /app/shared/node_modules/pg-pool/index.js:45
+decp-user-service  |     Error.captureStackTrace(err)
+decp-user-service  |           ^
+decp-user-service  | 
+decp-user-service  | Error: connect ECONNREFUSED 172.18.0.4:5432
+decp-user-service  |     at /app/shared/node_modules/pg-pool/index.js:45:11
+decp-user-service  |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+decp-user-service  |     at async Object.initDB (/app/shared/db.js:14:18) {
+decp-user-service  |   errno: -111,
+decp-user-service  |   code: 'ECONNREFUSED',
+decp-user-service  |   syscall: 'connect',
+decp-user-service  |   address: '172.18.0.4',
+decp-user-service  |   port: 5432
+decp-user-service  | }
+decp-user-service  | 
+decp-user-service  | Node.js v18.20.8
+decp-user-service  | 
+decp-user-service  | > user-service@1.0.0 start
+decp-user-service  | > node index.js
+decp-user-service  | 
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T17:22:32.987Z","message":"User Service listening on port 3000"}
+decp-user-service  | {"level":"ERROR","timestamp":"2026-03-19T17:22:33.002Z","message":"RabbitMQ connection failed","errno":-111,"code":"ECONNREFUSED","syscall":"connect","address":"172.18.0.5","port":5672}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T17:22:33.339Z","message":"Database tables initialized successfully."}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:06:16.755Z","message":"New user registered: Dharani as Student"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:06:17.065Z","message":"User logged in: Dharani"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:06:39.282Z","message":"New user registered: d.navodya.s@gmail.com as Student"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:06:39.414Z","message":"User logged in: d.navodya.s@gmail.com"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:17:49.269Z","message":"New user registered: dns@gmail.com as Student"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:17:49.446Z","message":"User logged in: dns@gmail.com"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:24:58.202Z","message":"New user registered: dharanii as Student"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:24:58.321Z","message":"User logged in: dharanii"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:25:22.835Z","message":"User logged in: dharanii"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:30:20.807Z","message":"New user registered: nimesha as Student"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:30:21.132Z","message":"User logged in: nimesha"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:34:53.322Z","message":"New user registered: shammi as Student"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:34:53.798Z","message":"User logged in: shammi"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:40:30.313Z","message":"New user registered: shashini as Student"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:40:30.754Z","message":"User logged in: shashini"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:41:30.342Z","message":"User logged in: shashini"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T20:47:23.447Z","message":"User logged in: dharanii"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T21:06:33.016Z","message":"User logged in: dharanii"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T21:13:12.831Z","message":"User logged in: dharanii"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-19T21:22:38.410Z","message":"User logged in: dharanii"}
+decp-user-service  | {"level":"INFO","timestamp":"2026-03-20T04:40:38.053Z","message":"User logged in: dharanii"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T20:47:26.139Z","message":"Gateway Request:","method":"GET","path":"/api/events"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T20:48:55.713Z","message":"Gateway Request:","method":"GET","path":"/api/jobs"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T20:48:55.766Z","message":"Gateway Request:","method":"GET","path":"/api/jobs"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T20:53:25.892Z","message":"Gateway Request:","method":"GET","path":"/api/events"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T20:53:25.993Z","message":"Gateway Request:","method":"GET","path":"/api/events"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T20:55:25.724Z","message":"Gateway Request:","method":"GET","path":"/api/users/projects"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T20:55:25.828Z","message":"Gateway Request:","method":"GET","path":"/api/users/projects"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T20:57:47.839Z","message":"Gateway Request:","method":"GET","path":"/api/users/list"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T20:57:47.842Z","message":"Gateway Request:","method":"GET","path":"/api/users/groups"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T20:57:47.907Z","message":"Gateway Request:","method":"GET","path":"/api/users/list"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T20:57:47.909Z","message":"Gateway Request:","method":"GET","path":"/api/users/groups"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T20:57:49.593Z","message":"Gateway Request:","method":"GET","path":"/api/users/messages/1"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T20:57:54.205Z","message":"Gateway Request:","method":"POST","path":"/api/users/messages"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:00:35.030Z","message":"Gateway Request:","method":"GET","path":"/api/users/messages/1"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:06:32.700Z","message":"Gateway Request:","method":"POST","path":"/api/users/login"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:06:36.976Z","message":"Gateway Request:","method":"GET","path":"/api/feed"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:06:36.984Z","message":"Gateway Request:","method":"GET","path":"/api/jobs"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:06:36.991Z","message":"Gateway Request:","method":"GET","path":"/api/events"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:06:36.999Z","message":"Gateway Request:","method":"GET","path":"/api/feed"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:06:37.006Z","message":"Gateway Request:","method":"GET","path":"/api/jobs"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:06:37.012Z","message":"Gateway Request:","method":"GET","path":"/api/events"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:13:12.206Z","message":"Gateway Request:","method":"POST","path":"/api/users/login"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:13:15.858Z","message":"Gateway Request:","method":"GET","path":"/api/feed"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:13:15.889Z","message":"Gateway Request:","method":"GET","path":"/api/feed"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:22:38.120Z","message":"Gateway Request:","method":"POST","path":"/api/users/login"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:22:40.135Z","message":"Gateway Request:","method":"GET","path":"/api/feed"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T21:22:40.342Z","message":"Gateway Request:","method":"GET","path":"/api/feed"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T22:17:25.268Z","message":"Gateway Request:","method":"GET","path":"/api/users/profile"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T22:17:25.743Z","message":"Gateway Request:","method":"GET","path":"/api/users/profile"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T22:17:26.422Z","message":"Gateway Request:","method":"GET","path":"/api/users/profile"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T22:17:26.489Z","message":"Gateway Request:","method":"GET","path":"/api/users/profile"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-19T22:17:27.247Z","message":"Gateway Request:","method":"GET","path":"/api/notifications/stream?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoic2hhc2hpbmkiLCJyb2xlIjoiU3R1ZGVudCIsImlhdCI6MTc3Mzk1Mjg5MCwiZXhwIjoxNzc0MDM5MjkwfQ.MLfvySRy3vaSSTua9OtP4waGwQnNKNw-n-1xcxKexmo"}
+decp-api-gateway   | [HPM] Error occurred while proxying request localhost:8080/api/notifications/stream?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoic2hhc2hpbmkiLCJyb2xlIjoiU3R1ZGVudCIsImlhdCI6MTc3Mzk1Mjg5MCwiZXhwIjoxNzc0MDM5MjkwfQ.MLfvySRy3vaSSTua9OtP4waGwQnNKNw-n-1xcxKexmo to http://notification-service:3000/ [ECONNREFUSED] (https://nodejs.org/api/errors.html#errors_common_system_errors)
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T03:50:35.358Z","message":"Gateway Request:","method":"GET","path":"/api/users/profile"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T03:50:35.471Z","message":"Gateway Request:","method":"GET","path":"/api/users/profile"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T03:50:35.492Z","message":"Gateway Request:","method":"GET","path":"/api/users/profile"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T03:50:35.506Z","message":"Gateway Request:","method":"GET","path":"/api/users/profile"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T03:50:35.586Z","message":"Gateway Request:","method":"GET","path":"/api/notifications/stream?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoic2hhc2hpbmkiLCJyb2xlIjoiU3R1ZGVudCIsImlhdCI6MTc3Mzk1Mjg5MCwiZXhwIjoxNzc0MDM5MjkwfQ.MLfvySRy3vaSSTua9OtP4waGwQnNKNw-n-1xcxKexmo"}
+decp-api-gateway   | [HPM] Error occurred while proxying request localhost:8080/api/notifications/stream?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoic2hhc2hpbmkiLCJyb2xlIjoiU3R1ZGVudCIsImlhdCI6MTc3Mzk1Mjg5MCwiZXhwIjoxNzc0MDM5MjkwfQ.MLfvySRy3vaSSTua9OtP4waGwQnNKNw-n-1xcxKexmo to http://notification-service:3000/ [ENOTFOUND] (https://nodejs.org/api/errors.html#errors_common_system_errors)
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T04:23:58.029Z","message":"Gateway Request:","method":"GET","path":"/api/users/groups"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T04:23:58.040Z","message":"Gateway Request:","method":"GET","path":"/api/users/list"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T04:23:58.174Z","message":"Gateway Request:","method":"GET","path":"/api/users/groups"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T04:23:58.176Z","message":"Gateway Request:","method":"GET","path":"/api/users/list"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T04:23:59.465Z","message":"Gateway Request:","method":"GET","path":"/api/users/messages/1"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T04:32:31.034Z","message":"Gateway Request:","method":"GET","path":"/"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T04:32:46.056Z","message":"Gateway Request:","method":"GET","path":"/"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T04:40:30.626Z","message":"Gateway Request:","method":"POST","path":"/api/users/login"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T04:40:37.916Z","message":"Gateway Request:","method":"POST","path":"/api/users/login"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T04:40:39.644Z","message":"Gateway Request:","method":"GET","path":"/api/feed"}
+decp-api-gateway   | {"level":"INFO","timestamp":"2026-03-20T04:40:39.702Z","message":"Gateway Request:","method":"GET","path":"/api/feed"}

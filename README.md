@@ -42,7 +42,7 @@ The entire stack is containerized for "one-command" setup.
 
 ### 2. Access the Application
 - **Web App**: [http://localhost:5173](http://localhost:5173)
-- **API Gateway**: [http://localhost:8080/health](http://localhost:8080/health)
+- **API Gateway**: [http://13.60.230.32:8080/health](http://13.60.230.32:8080/health)
 - **MinIO Dashboard**: [http://localhost:9001](http://localhost:9001) (Admin: `admin` / `password123`)
 - **RabbitMQ**: [http://localhost:15672](http://localhost:15672)
 

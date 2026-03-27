@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
     // Axios instance pointing to the API Gateway
     const api = axios.create({
-        baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api',
+        baseURL: import.meta.env.VITE_API_URL || 'http://13.60.230.32:8080/api',
     });
 
     api.interceptors.request.use((config) => {

@@ -1,0 +1,28 @@
+class ChatMessageModel {
+  final int id;
+  final int senderId;
+  final int? receiverId;
+  final String content;
+  final DateTime createdAt;
+  final String? senderUsername;
+
+  ChatMessageModel({
+    required this.id,
+    required this.senderId,
+    this.receiverId,
+    required this.content,
+    required this.createdAt,
+    this.senderUsername,
+  });
+
+  factory ChatMessageModel.fromJson(Map<String, dynamic> json) {
+    return ChatMessageModel(
+      id: json['id'],
+      senderId: json['sender_id'],
+      receiverId: json['receiver_id'],
+      content: json['content'] ?? '',
+      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']).toLocal() : DateTime.now(),
+      senderUsername: json['sender_username'],
+    );
+  }
+}
